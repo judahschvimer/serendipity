@@ -32,9 +32,12 @@ class ViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         println("preparing for segue")
-        println("field : \(destinationField.text)")
+        println("destination_field : \(destinationField.text)")
+        println("serendipityOn : \(serendipityOn.on)")
+        println("travel_method: \(methodField.selectedSegmentIndex)")
+        
         if let next = segue.destinationViewController as? MapViewController {
-            next.sendValue(destinationField.text)
+            next.sendValues(destinationField.text, transitType: methodField.selectedSegmentIndex, serendipityOn: serendipityOn.on)
         } else {
             println("could not complete typecasting")
         }

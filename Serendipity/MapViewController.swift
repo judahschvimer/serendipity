@@ -9,8 +9,14 @@
 import UIKit
 
 class MapViewController: UIViewController {
+    let DRIVE_TYPE:Int = 0
+    let WALK_TYPE:Int = 1
+    
     @IBOutlet weak var destinationLabel: UILabel!
+    
     var destinationText:NSString!
+    var transitType:Int!
+    var serendipityOn:Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +32,10 @@ class MapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func sendValue(value : NSString) {
-        destinationText = value
+    func sendValues(destination: NSString, transitType: Int, serendipityOn: Bool) {
+        self.destinationText = destination
+        self.transitType = transitType
+        self.serendipityOn = serendipityOn
     }
     
 }
