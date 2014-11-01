@@ -14,6 +14,7 @@
 		180F91E11A047A14003E2503 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 180F91E01A047A14003E2503 /* Images.xcassets */; };
 		180F91E41A047A14003E2503 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 180F91E21A047A14003E2503 /* LaunchScreen.xib */; };
 		180F91F01A047A14003E2503 /* SerendipityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180F91EF1A047A14003E2503 /* SerendipityTests.swift */; };
+		1883EF3F1A0550D2004D82E7 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1883EF3E1A0550D2004D82E7 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		180F91E91A047A14003E2503 /* SerendipityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SerendipityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		180F91EE1A047A14003E2503 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		180F91EF1A047A14003E2503 /* SerendipityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerendipityTests.swift; sourceTree = "<group>"; };
+		1883EF3E1A0550D2004D82E7 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 			children = (
 				180F91D61A047A14003E2503 /* AppDelegate.swift */,
 				180F91DB1A047A14003E2503 /* ViewController.swift */,
+				1883EF3E1A0550D2004D82E7 /* MapViewController.swift */,
 				180F91DD1A047A14003E2503 /* Main.storyboard */,
 				180F91E01A047A14003E2503 /* Images.xcassets */,
 				180F91E21A047A14003E2503 /* LaunchScreen.xib */,
@@ -218,6 +221,7 @@
 				180F91DC1A047A14003E2503 /* ViewController.swift in Sources */,
 				180F91DA1A047A14003E2503 /* Serendipity.xcdatamodeld in Sources */,
 				180F91D71A047A14003E2503 /* AppDelegate.swift in Sources */,
+				1883EF3F1A0550D2004D82E7 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +413,7 @@
 				180F91F51A047A14003E2503 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		180F91F61A047A14003E2503 /* Build configuration list for PBXNativeTarget "SerendipityTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +422,7 @@
 				180F91F81A047A14003E2503 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

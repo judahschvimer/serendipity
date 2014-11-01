@@ -22,12 +22,6 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tjp-i4-wdN">
-                                <rect key="frame" x="217" y="168" width="167" height="30"/>
-                                <accessibility key="accessibilityConfiguration" hint="Destination"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ij-Hr-mju">
                                 <rect key="frame" x="340" y="300" width="51" height="31"/>
                             </switch>
@@ -43,6 +37,9 @@
                                 <state key="normal" title="Start Adventure!">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="moveToMapEvent:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="O0R-Gb-Rsz"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Travel Method" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LcJ-71-TQN">
                                 <rect key="frame" x="195" y="242" width="109" height="21"/>
@@ -56,6 +53,12 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tjp-i4-wdN">
+                                <rect key="frame" x="217" y="168" width="167" height="30"/>
+                                <accessibility key="accessibilityConfiguration" hint="Destination"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -68,9 +71,48 @@
                             <constraint firstAttribute="centerX" secondItem="yYK-1z-GIs" secondAttribute="centerX" constant="-64" id="YwQ-9H-zCi"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="destinationField" destination="tjp-i4-wdN" id="XvV-9U-VYV"/>
+                        <outlet property="methodField" destination="yYK-1z-GIs" id="x6F-Xz-Um2"/>
+                        <outlet property="serendipityOn" destination="7Ij-Hr-mju" id="VSL-42-Epc"/>
+                        <outlet property="startButton" destination="XaO-Kq-DAq" id="gJJ-Aq-V6p"/>
+                        <segue destination="oa7-XH-CCT" kind="presentation" identifier="mapTransition" modalTransitionStyle="crossDissolve" id="JzS-tl-lJu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="Kc4-NV-oKb">
+            <objects>
+                <viewController id="oa7-XH-CCT" customClass="MapViewController" customModule="Serendipity" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="l2a-C2-3kS"/>
+                        <viewControllerLayoutGuide type="bottom" id="4Yy-ka-sX5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aj6-v2-pXR">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Second Screen Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HcB-Eo-lk0">
+                                <rect key="frame" x="194" y="188" width="213" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="HcB-Eo-lk0" secondAttribute="centerX" id="BFF-Vt-D1i"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="destinationLabel" destination="HcB-Eo-lk0" id="Kgr-9g-XbC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VOe-dL-eGC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1158" y="234"/>
         </scene>
     </scenes>
 </document>
