@@ -32,6 +32,7 @@
 		5C679FB01A05ACFD00728D75 /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C679FAF1A05ACFD00728D75 /* GoogleDataProvider.swift */; };
 		5CC1F8A31A05ADA800712BAB /* GooglePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1F8A21A05ADA800712BAB /* GooglePlace.swift */; };
 		5CC1F8A51A05ADAF00712BAB /* PlaceMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1F8A41A05ADAF00712BAB /* PlaceMarker.swift */; };
+		5CC62F631A0616B100001283 /* attractions.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CC62F621A0616B100001283 /* attractions.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		5C679FAF1A05ACFD00728D75 /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
 		5CC1F8A21A05ADA800712BAB /* GooglePlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlace.swift; sourceTree = "<group>"; };
 		5CC1F8A41A05ADAF00712BAB /* PlaceMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceMarker.swift; sourceTree = "<group>"; };
+		5CC62F621A0616B100001283 /* attractions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attractions.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				180F91D31A047A14003E2503 /* Serendipity */,
 				180F91EC1A047A14003E2503 /* SerendipityTests */,
 				180F91D21A047A14003E2503 /* Products */,
+				5CC62F641A0616BB00001283 /* icons */,
 			);
 			sourceTree = "<group>";
 		};
@@ -190,6 +193,14 @@
 				5C679F911A05AB6500728D75 /* AVFoundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5CC62F641A0616BB00001283 /* icons */ = {
+			isa = PBXGroup;
+			children = (
+				5CC62F621A0616B100001283 /* attractions.png */,
+			);
+			name = icons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,6 +286,7 @@
 				180F91DF1A047A14003E2503 /* Main.storyboard in Resources */,
 				180F91E41A047A14003E2503 /* LaunchScreen.xib in Resources */,
 				180F91E11A047A14003E2503 /* Images.xcassets in Resources */,
+				5CC62F631A0616B100001283 /* attractions.png in Resources */,
 				5C679F901A05AB3300728D75 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

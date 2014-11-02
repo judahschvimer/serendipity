@@ -26,6 +26,10 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     @IBOutlet var mapView: GMSMapView!
     @IBOutlet var navInfo: UIWindow!
     @IBOutlet var navLabel: UILabel!
+    @IBOutlet var detourInfo: UIWindow!
+    @IBOutlet var detourLabel: UILabel!
+    @IBOutlet var attButton: UIButton!
+
     
     /******************************************
     * Init Various other Globals
@@ -86,7 +90,28 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         navInfo.addSubview(navLabel)
         navLabel.center = navInfo.center
         
+        attButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        attButton.frame = CGRectMake(10, 120, 48, 48)
+        attButton.setImage(UIImage(named: "attractions.png"), forState: UIControlState.Normal)
+        attButton.addTarget(self, action: "attButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(attButton)
+        
+        detourInfo = UIWindow(frame: CGRect(x: 0, y: self.view.bounds.height-200, width: self.view.bounds.width, height: 140))
+        detourInfo.backgroundColor = UIColor(red: 240, green: 114, blue: 28, alpha: 0.8)
+        self.view.addSubview(detourInfo)
+        detourInfo.makeKeyAndVisible()
+        
+        detourLabel = UILabel(frame: CGRect(x: 0, y: self.view.bounds.height-200, width: 150, height: 100))
+        detourLabel.text = "helloworld"
+        detourInfo.addSubview(detourLabel)
+        detourLabel.center = detourInfo.center
+        
         mapView.removeObserver(self, forKeyPath: "myLocation")
+    }
+    
+    func attButtonAction(sender:UIButton!)
+    {
+        println("Button tapped")
     }
     
     func getLocationForAddress(address: String) -> CLLocationCoordinate2D? {
@@ -126,7 +151,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         if(currLoc != nil){
             println(currLoc)
             mapView.animateToLocation(currLoc.coordinate)
-            fetchNearbyPlaces(currLoc.coordinate)
+            //fetchNearbyPlaces(currLoc.coordinate)
             // TODO: find a more elegant way to exit early.
             if let tst = self.stepList {
             } else {
