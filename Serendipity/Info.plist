@@ -30,6 +30,10 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>NSLocationUsageDesription</key>
+	<string>My App would pretty please like to use your GPS</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>My App would pretty please like to use your GPS</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
