@@ -21,6 +21,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     var serendipityOn:Bool!
     
     @IBOutlet var mapView: GMSMapView!
+    @IBOutlet var navInfo: UIWindow!
     
     var firstLocationUpdate: Bool?
     let locationManager = CLLocationManager()
@@ -51,11 +52,11 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         self.mapView.addObserver(self, forKeyPath: "myLocation", options: .New, context: nil)
         self.mapView.myLocationEnabled = true
         
+        mapView.frame = view.bounds         // REQUIRED for google maps to work properly with
+        self.view.addSubview(mapView)       // ******************************************
+		cameraLocationSetter()        
 
-        view = self.mapView
-        
-        cameraLocationSetter()
-        
+
         self.path = GMSMutablePath(path: GMSPath())
         let start = CLLocationCoordinate2D(latitude: 37.33500926, longitude: -120.03272188)
         self.path!.addCoordinate(start)
@@ -66,7 +67,16 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("handleTimer:"), userInfo: nil, repeats: true)
 
         
-        self.mapView.removeObserver(self, forKeyPath: "myLocation")
+        // set up all functionality after loading in a view.
+        println("managed to successfully load view")
+        // Do any additional setup after loading the view, typically from a nib.
+        
+        navInfo = UIWindow(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 120))
+        navInfo.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.75)
+        self.view.addSubview(navInfo)
+        navInfo.makeKeyAndVisible()
+        
+        mapView.removeObserver(self, forKeyPath: "myLocation")
     }
     
     //getches a list of nearby places
