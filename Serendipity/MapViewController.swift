@@ -20,9 +20,16 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     var transitType:Int!
     var serendipityOn:Bool!
     
+    /******************************************
+     * Init Fields for Main Map UI
+     */
     @IBOutlet var mapView: GMSMapView!
     @IBOutlet var navInfo: UIWindow!
+    @IBOutlet var navLabel: UILabel!
     
+    /******************************************
+    * Init Various other Globals
+    */
     var firstLocationUpdate: Bool?
     let locationManager = CLLocationManager()
     let dataProvider = GoogleDataProvider()
@@ -37,10 +44,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //self.end = self.getLocationForAddress("\(destinationText)")!
         //println(self.end)
-        
+
         self.locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -68,15 +74,17 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         
         NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("handleTimer:"), userInfo: nil, repeats: true)
 
-        
-        // set up all functionality after loading in a view.
-        println("managed to successfully load view")
         // Do any additional setup after loading the view, typically from a nib.
         
         navInfo = UIWindow(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 120))
         navInfo.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.75)
         self.view.addSubview(navInfo)
         navInfo.makeKeyAndVisible()
+        
+        navLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 100))
+        navLabel.text = "helloworld"
+        navInfo.addSubview(navLabel)
+        navLabel.center = navInfo.center
         
         mapView.removeObserver(self, forKeyPath: "myLocation")
     }
@@ -99,12 +107,6 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         mapView.clear()
         dataProvider.fetchPlacesNearCoordinate(coordinate, radius:mapRadius, types: searchedTypes) { places in
             nearPlaces = places
-            /*
-            for place: GooglePlace in places {
-                let marker = PlaceMarker(place: place)
-                println(place.name)
-                marker.map = self.mapView
-            }*/
         }
         println(nearPlaces)
         return nearPlaces
@@ -220,7 +222,10 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     // gets the map ready for the next step in the directions
     func nextStep(){
         self.stepNum++
-        
+        // set helloworld label to the next one
+        if let stepAsDict = stepList[stepNum] as? [String : AnyObject] {
+            navLabel.text = self.getDirFromStep(stepAsDict)
+        }
     }
     
     // recalculates the path and clears the map for the new path
@@ -229,7 +234,11 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         path!.addCoordinate(mapView.myLocation.coordinate)
         path!.addCoordinate(self.end)
         drawSampleRoute(mapView.myLocation.coordinate, end: self.end)
+        stepNum = 0
         
+        if let stepAsDict = stepList[stepNum] as? [String : AnyObject] {
+            navLabel.text = self.getDirFromStep(stepAsDict)
+        }
     }
     
     // draws a route from the start to the end on the map and gets the steps for the route
