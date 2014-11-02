@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		174D5FA81A067FE000DB0BE7 /* food.png in Resources */ = {isa = PBXBuildFile; fileRef = 174D5FA61A067FE000DB0BE7 /* food.png */; };
+		174D5FA91A067FE000DB0BE7 /* gas.png in Resources */ = {isa = PBXBuildFile; fileRef = 174D5FA71A067FE000DB0BE7 /* gas.png */; };
 		180F91D71A047A14003E2503 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180F91D61A047A14003E2503 /* AppDelegate.swift */; };
 		180F91DA1A047A14003E2503 /* Serendipity.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 180F91D81A047A14003E2503 /* Serendipity.xcdatamodeld */; };
 		180F91DC1A047A14003E2503 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180F91DB1A047A14003E2503 /* ViewController.swift */; };
@@ -46,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		174D5FA61A067FE000DB0BE7 /* food.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = food.png; sourceTree = "<group>"; };
+		174D5FA71A067FE000DB0BE7 /* gas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gas.png; sourceTree = "<group>"; };
 		180F91D11A047A14003E2503 /* Serendipity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Serendipity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		180F91D51A047A14003E2503 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		180F91D61A047A14003E2503 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -198,6 +202,8 @@
 		5CC62F641A0616BB00001283 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				174D5FA61A067FE000DB0BE7 /* food.png */,
+				174D5FA71A067FE000DB0BE7 /* gas.png */,
 				5CC62F621A0616B100001283 /* attractions.png */,
 			);
 			name = icons;
@@ -287,7 +293,9 @@
 				180F91E41A047A14003E2503 /* LaunchScreen.xib in Resources */,
 				180F91E11A047A14003E2503 /* Images.xcassets in Resources */,
 				5CC62F631A0616B100001283 /* attractions.png in Resources */,
+				174D5FA91A067FE000DB0BE7 /* gas.png in Resources */,
 				5C679F901A05AB3300728D75 /* GoogleMaps.bundle in Resources */,
+				174D5FA81A067FE000DB0BE7 /* food.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,6 +29,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     @IBOutlet var detourInfo: UIWindow!
     @IBOutlet var detourLabel: UILabel!
     @IBOutlet var attButton: UIButton!
+    @IBOutlet var foodButton: UIButton!
+    @IBOutlet var gasButton: UIButton!
 
     
     /******************************************
@@ -91,10 +93,28 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         navLabel.center = navInfo.center
         
         attButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        attButton.frame = CGRectMake(10, 120, 48, 48)
+        attButton.frame = CGRectMake(10, 141, 36, 36)
         attButton.setImage(UIImage(named: "attractions.png"), forState: UIControlState.Normal)
         attButton.addTarget(self, action: "attButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        attButton.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
+        attButton.imageEdgeInsets = UIEdgeInsetsMake(6, 6, 6, 6)
         self.view.addSubview(attButton)
+        
+        foodButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        foodButton.frame = CGRectMake(10, 195, 36, 36)
+        foodButton.setImage(UIImage(named: "food.png"), forState: UIControlState.Normal)
+        foodButton.addTarget(self, action: "attButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        foodButton.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
+        foodButton.imageEdgeInsets = UIEdgeInsetsMake(6, 6, 6, 6)
+        self.view.addSubview(foodButton)
+        
+        gasButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        gasButton.frame = CGRectMake(10, 249, 36, 36)
+        gasButton.setImage(UIImage(named: "gas.png"), forState: UIControlState.Normal)
+        gasButton.addTarget(self, action: "attButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        gasButton.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
+        gasButton.imageEdgeInsets = UIEdgeInsetsMake(6, 6, 6, 6)
+        self.view.addSubview(gasButton)
         
         detourInfo = UIWindow(frame: CGRect(x: 0, y: self.view.bounds.height-200, width: self.view.bounds.width, height: 140))
         detourInfo.backgroundColor = UIColor(red: 240, green: 114, blue: 28, alpha: 0.8)
