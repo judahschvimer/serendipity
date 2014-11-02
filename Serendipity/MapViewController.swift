@@ -27,7 +27,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     let locationManager = CLLocationManager()
     let dataProvider = GoogleDataProvider()
     var searchedTypes = ["bakery", "bar", "cafe", "grocery_or_supermarket", "restaurant"]
-    let mapRadius = 2000.0
+    let mapRadius = 50000.0
     var path:GMSMutablePath?
     let strokeWidth: CGFloat = 5
     var stepList: [AnyObject]!
@@ -38,6 +38,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //self.end = self.getLocationForAddress("\(destinationText)")!
+        //println(self.end)
         
         self.locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
@@ -79,6 +81,17 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         mapView.removeObserver(self, forKeyPath: "myLocation")
     }
     
+    func getLocationForAddress(address: String) -> CLLocationCoordinate2D? {
+        var loc = CLLocationCoordinate2D?()
+        dataProvider.fetchCoordsForAddress(address){ outloc in
+            loc = outloc
+            println("close")
+            println(loc)
+        }
+
+        return loc!
+    }
+    
     //getches a list of nearby places
     func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) -> [GooglePlace] {
         var nearPlaces:[GooglePlace] = []
@@ -93,7 +106,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
                 marker.map = self.mapView
             }*/
         }
-        
+        println(nearPlaces)
         return nearPlaces
     }
     
@@ -111,7 +124,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         if(currLoc != nil){
             println(currLoc)
             mapView.animateToLocation(currLoc.coordinate)
-            
+            fetchNearbyPlaces(currLoc.coordinate)
             // TODO: find a more elegant way to exit early.
             if let tst = self.stepList {
             } else {

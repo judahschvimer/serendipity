@@ -15,10 +15,47 @@ class GoogleDataProvider {
   let apiKey = "AIzaSyBbDy_z2nVbAR47mNKSOT3yTqyCsMl9pXI"
   var photoCache = [String:UIImage]()
   var placesTask = NSURLSessionDataTask()
+  var addressTask = NSURLSessionDataTask()
   var session: NSURLSession {
     return NSURLSession.sharedSession()
   }
-  
+    
+    func fetchCoordsForAddress(address: String, completion: ((CLLocationCoordinate2D) -> Void)) -> (){
+
+        var urlString = "https://maps.googleapis.com/maps/api/geocode/json?address=\(address)&key=\(apiKey)"
+        urlString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        println(urlString)
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        addressTask = session.dataTaskWithURL(NSURL(string: urlString)!) {data, response, error in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            println("SESSION")
+            var coords = CLLocationCoordinate2D?()
+                
+            if let json = NSJSONSerialization.JSONObjectWithData(data, options:nil, error:nil) as? NSDictionary {
+                if let results = json["results"] as? NSArray {
+                    if let loc = results.firstObject as? [String : AnyObject] {
+                        if let geometry = loc["geometry"] as AnyObject? as? [String:AnyObject] {
+                            if let location = geometry["location"] as AnyObject? as? [String: AnyObject] {
+                                if let lat = location["lat"] as AnyObject? as? Double {
+                                    if let lng = location["lng"] as AnyObject? as? Double {
+                                        coords = CLLocationCoordinate2DMake(lat, lng)
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                if(coords != nil){
+                    completion(coords!)
+                }
+            }
+        }
+        addressTask.resume()
+     
+    }
     
   func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double, types:[String], completion: (([GooglePlace]) -> Void)) -> ()
   {
@@ -26,6 +63,7 @@ class GoogleDataProvider {
     let typesString = types.count > 0 ? join("|", types) : "food"
     urlString += "&types=\(typesString)"
     urlString = urlString.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+    
     
     if placesTask.taskIdentifier > 0 && placesTask.state == .Running {
       placesTask.cancel()
