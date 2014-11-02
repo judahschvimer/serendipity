@@ -58,7 +58,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
         
-        let camera = GMSCameraPosition.cameraWithLatitude(-33.86, longitude: 151.20, zoom: 12)
+        let camera = GMSCameraPosition.cameraWithLatitude(41.3111, longitude: -72.9267, zoom: 12)
         self.mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
         self.mapView.settings.compassButton = true
         self.mapView.settings.myLocationButton = true
