@@ -116,15 +116,16 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         gasButton.imageEdgeInsets = UIEdgeInsetsMake(6, 6, 6, 6)
         self.view.addSubview(gasButton)
         
-        detourInfo = UIWindow(frame: CGRect(x: 0, y: self.view.bounds.height-200, width: self.view.bounds.width, height: 140))
+        /*detourInfo = UIWindow(frame: CGRect(x: 0, y: self.view.bounds.height-200, width: self.view.bounds.width, height: 140))
         detourInfo.backgroundColor = UIColor(red: 240, green: 114, blue: 28, alpha: 0.8)
         self.view.addSubview(detourInfo)
         detourInfo.makeKeyAndVisible()
         
-        detourLabel = UILabel(frame: CGRect(x: 0, y: self.view.bounds.height-200, width: 150, height: 100))
+        detourLabel = UILabel(frame: CGRect(x: 0, y: self.view.bounds.height-100, width: 150, height: 100))
+        
         detourLabel.text = "helloworld"
         detourInfo.addSubview(detourLabel)
-        detourLabel.center = detourInfo.center
+        detourLabel.center = detourInfo.center*/
         
         mapView.removeObserver(self, forKeyPath: "myLocation")
     }
