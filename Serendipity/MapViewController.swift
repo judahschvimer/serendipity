@@ -37,45 +37,39 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         self.locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
         
         let camera = GMSCameraPosition.cameraWithLatitude(-33.86, longitude: 151.20, zoom: 12)
-        mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
-        mapView.settings.compassButton = true
-        mapView.settings.myLocationButton = true
-        mapView.delegate = self
-        mapView.addObserver(self, forKeyPath: "myLocation", options: .New, context: nil)
+        self.mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
+        self.mapView.settings.compassButton = true
+        self.mapView.settings.myLocationButton = true
+        self.mapView.delegate = self
+        self.mapView.addObserver(self, forKeyPath: "myLocation", options: .New, context: nil)
+        self.mapView.myLocationEnabled = true
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.mapView.myLocationEnabled = true
-        })
-        
-        view = mapView
+
+        view = self.mapView
         
         cameraLocationSetter()
         
-        path = GMSMutablePath(path: GMSPath())
+        self.path = GMSMutablePath(path: GMSPath())
         let start = CLLocationCoordinate2D(latitude: 37.33500926, longitude: -120.03272188)
-        path!.addCoordinate(start)
-        path!.addCoordinate(self.end)
+        self.path!.addCoordinate(start)
+        self.path!.addCoordinate(self.end)
         
         drawSampleRoute(start, end: self.end)
         
         NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("handleTimer:"), userInfo: nil, repeats: true)
 
-
         
-        // set up all functionality after loading in a view.
-        println("managed to successfully load view")
-        //self.destinationLabel.text = "Destination: \(destinationText)"
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        mapView.removeObserver(self, forKeyPath: "myLocation")
+        self.mapView.removeObserver(self, forKeyPath: "myLocation")
     }
     
+    //getches a list of nearby places
     func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) -> [GooglePlace] {
         var nearPlaces:[GooglePlace] = []
         
@@ -94,11 +88,14 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     }
     
     
+    // a handler for the timer that simply calls the camera locaiton setter
     func handleTimer(timer: NSTimer) {
         cameraLocationSetter()
         
     }
     
+    
+    //sets the camera location for the current map and checks that the point is still on the route
     func cameraLocationSetter() {
         let currLoc = mapView.myLocation
         if(currLoc != nil){
@@ -127,6 +124,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         
     }
     
+    // gets the end points of the step
     func getEndPointsofStep(step: [String: AnyObject]) -> (CLLocationCoordinate2D, CLLocationCoordinate2D)?{
         if let start = step["start_location"] as AnyObject? as? [String : Double] {
             if let start_lat = start["lat"] as AnyObject? as? Double {
@@ -144,31 +142,15 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         return nil
     }
     
+    // determines if a point is on the path in the current step
     func isPointOnPath(step: [String: AnyObject], p: CLLocationCoordinate2D) -> Bool{
         let (start, end) = getEndPointsofStep(step)!
         return (isBetween(p.latitude, s1: start.latitude, s2: end.latitude, tolerance:self.tolerate) && isBetween(p.longitude, s1: start.longitude, s2: end.longitude, tolerance:self.tolerate))
 
     }
-
-    /*
-    func isPointOnPath(step: [String: AnyObject], p: CLLocationCoordinate2D) -> Bool{
-        if let start = step["start_location"] as AnyObject? as? [String : Double] {
-            if let start_lat = start["lat"] as AnyObject? as? Double {
-                if let start_lng = start["lng"] as AnyObject? as? Double {
-                    if let end = step["end_location"] as AnyObject? as? [String : Double] {
-                        if let end_lat = end["lat"] as AnyObject? as? Double {
-                            if let end_lng = end["lng"] as AnyObject? as? Double {
-                                return (isBetween(p.latitude, s1: start_lat, s2: end_lat, tolerance:self.tolerate) && isBetween(p.longitude, s1: start_lng, s2: end_lng, tolerance:self.tolerate))
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false
-    }
-    */
     
+    
+    // determines if the mid double is between the other two doubles with a tolerance for some noise
     func isBetween(mid: Double, s1: Double, s2:Double, tolerance:Double) -> Bool{
         return ((mid > (s1-tolerance) && mid < (s2+tolerance)) || (mid < (s1+tolerance) && mid > (s2-tolerance)))
         
@@ -212,11 +194,13 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         return nil
     }
     
+    // gets the map ready for the next step in the directions
     func nextStep(){
         self.stepNum++
         
     }
     
+    // recalculates the path and clears the map for the new path
     func recalculate(){
         mapView.clear()
         path!.addCoordinate(mapView.myLocation.coordinate)
@@ -225,6 +209,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         
     }
     
+    // draws a route from the start to the end on the map and gets the steps for the route
     func drawSampleRoute(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D) {
         
         println("getting to drawing the sample route function")
@@ -360,6 +345,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         return d; // returns the distance in meter
     }
     
+    // function called at the end to dispose of resources
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
