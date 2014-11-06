@@ -14,8 +14,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     let DRIVE_TYPE:Int = 0
     let WALK_TYPE:Int = 1
     
-    @IBOutlet weak var destinationLabel: UILabel!
-    
+    /******************************************
+    * Init Fields to pass Navigation parameters between ViewControllers
+    */
     var destinationText:NSString!
     var transitType:Int!
     var serendipityOn:Bool!
@@ -31,27 +32,32 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     @IBOutlet var attButton: UIButton!
     @IBOutlet var foodButton: UIButton!
     @IBOutlet var gasButton: UIButton!
+    @IBOutlet weak var destinationLabel: UILabel!
 
     
     /******************************************
     * Init Various other Globals
     */
-    var firstLocationUpdate: Bool?
+    
+    let FOOD_BUTTON_TAG:Int = 0
+    let GAS_BUTTON_TAG:Int = 1
+    let ATT_BUTTON_TAG:Int = 2
+    
     let locationManager = CLLocationManager()
     let dataProvider = GoogleDataProvider()
-    var searchedTypes = ["bakery", "bar", "cafe", "grocery_or_supermarket", "restaurant"]
-    let mapRadius = 50000.0
-    var path:GMSMutablePath?
     let strokeWidth: CGFloat = 5
+    let mapRadius = 50000.0
+    let tolerate:CLLocationDistance = CLLocationDistance(0.002)
+    
+    var firstLocationUpdate: Bool?
+    var searchedTypes = ["bakery", "bar", "cafe", "grocery_or_supermarket", "restaurant"]
+    var path:GMSMutablePath?
     var stepList: [AnyObject]!
     var stepNum = 0
     var end = CLLocationCoordinate2D(latitude: 37.33500926, longitude: -118.03272188)
-    let tolerate:CLLocationDistance = CLLocationDistance(0.002)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.end = self.getLocationForAddress("\(destinationText)")!
-        //println(self.end)
 
         self.locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
@@ -67,9 +73,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         self.mapView.myLocationEnabled = true
         
         mapView.frame = view.bounds         // REQUIRED for google maps to work properly with
-        self.view.addSubview(mapView)       // ******************************************
-		cameraLocationSetter()        
-
+        self.view.addSubview(mapView)       // additional buttons on top of the UI.
+		cameraLocationSetter()              // ******************************************
 
         self.path = GMSMutablePath(path: GMSPath())
         let start = CLLocationCoordinate2D(latitude: 37.33500926, longitude: -120.03272188)
@@ -92,47 +97,43 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         navInfo.addSubview(navLabel)
         navLabel.center = navInfo.center
         
+        /**
+         * Attraction Button Configuration Options
+         */
         attButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         attButton.frame = CGRectMake(10, 141, 36, 36)
         attButton.setImage(UIImage(named: "attractions.png"), forState: UIControlState.Normal)
         attButton.addTarget(self, action: "attButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         attButton.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
         attButton.imageEdgeInsets = UIEdgeInsetsMake(6, 6, 6, 6)
+        attButton.tag = ATT_BUTTON_TAG
         self.view.addSubview(attButton)
         
+        /**
+        * Food Button Configuration Options
+        */
         foodButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         foodButton.frame = CGRectMake(10, 195, 36, 36)
         foodButton.setImage(UIImage(named: "food.png"), forState: UIControlState.Normal)
         foodButton.addTarget(self, action: "attButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         foodButton.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
         foodButton.imageEdgeInsets = UIEdgeInsetsMake(6, 6, 6, 6)
+        foodButton.tag = FOOD_BUTTON_TAG
         self.view.addSubview(foodButton)
         
+        /**
+        * Gas Button Configuration Options
+        */
         gasButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         gasButton.frame = CGRectMake(10, 249, 36, 36)
         gasButton.setImage(UIImage(named: "gas.png"), forState: UIControlState.Normal)
         gasButton.addTarget(self, action: "attButtonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         gasButton.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
         gasButton.imageEdgeInsets = UIEdgeInsetsMake(6, 6, 6, 6)
+        gasButton.tag = GAS_BUTTON_TAG
         self.view.addSubview(gasButton)
         
-        /*detourInfo = UIWindow(frame: CGRect(x: 0, y: self.view.bounds.height-200, width: self.view.bounds.width, height: 140))
-        detourInfo.backgroundColor = UIColor(red: 240, green: 114, blue: 28, alpha: 0.8)
-        self.view.addSubview(detourInfo)
-        detourInfo.makeKeyAndVisible()
-        
-        detourLabel = UILabel(frame: CGRect(x: 0, y: self.view.bounds.height-100, width: 150, height: 100))
-        
-        detourLabel.text = "helloworld"
-        detourInfo.addSubview(detourLabel)
-        detourLabel.center = detourInfo.center*/
-        
         mapView.removeObserver(self, forKeyPath: "myLocation")
-    }
-    
-    func attButtonAction(sender:UIButton!)
-    {
-        println("Button tapped")
     }
     
     func getLocationForAddress(address: String) -> CLLocationCoordinate2D? {
@@ -146,23 +147,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         return loc!
     }
     
-    //getches a list of nearby places
-    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) -> [GooglePlace] {
-        var nearPlaces:[GooglePlace] = []
-        
-        mapView.clear()
-        dataProvider.fetchPlacesNearCoordinate(coordinate, radius:mapRadius, types: searchedTypes) { places in
-            nearPlaces = places
-        }
-        println(nearPlaces)
-        return nearPlaces
-    }
-    
-    
-    // a handler for the timer that simply calls the camera locaiton setter
+    // a handler for the timer that simply calls the camera location setter
     func handleTimer(timer: NSTimer) {
         cameraLocationSetter()
-        
     }
     
     
@@ -310,22 +297,37 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         }
     }
     
+    func attButtonAction(sender:UIButton!)
+    {
+        println(sender.tag)
+        println("Button tapped")
+        performSerendipitySearch(4)
+    }
+    
     /**************************************************************************
     * set of functions to compute the "serendipity" rerouting on navigation.
     */
     
-    func performSerendipitySearch(limit: Int) -> [GooglePlace] {
+    func performSerendipitySearch(limit: Int) -> Void {
         let searchPoints = self.getRelevantSearchPointsOnRoute()
-        let proximalPlaces = self.getProximalPlaces(searchPoints)
-        let scoredPlaces = self.getPlacesScore(proximalPlaces)
-        let sortedScoredPlaces = self.sortPlacesByScore(scoredPlaces)
-        
-        var filteredPlaces:[GooglePlace] = []
-        for i in 0...limit {
-            filteredPlaces.append(sortedScoredPlaces[i])
+        self.getProximalPlaces(searchPoints) {
+            proximalPlaces in
+            
+            // this shouldn't be a blocking function call.
+            let scoredPlaces = self.getPlacesScore(proximalPlaces)
+            let sortedScoredPlaces = self.sortPlacesByScore(scoredPlaces)
+            
+            var filteredPlaces:[GooglePlace] = []
+            for i in 0...limit {
+                filteredPlaces.append(sortedScoredPlaces[i])
+            }
+            
+            // TODO: update UI here with the verified filteredPlaces array
+            println("----------------- UPDATE TO UI ------------------")
+            for pl in filteredPlaces {
+                println(pl.address)
+            }
         }
-        
-        return filteredPlaces
     }
     
     // TODO: refine this method to sample points by equal *distance* along the
@@ -334,7 +336,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         var retList:[CLLocationCoordinate2D] = []
         
         var distPassed:Int = 0
-        for step:AnyObject in stepList[stepNum...stepList.count] {
+        for step:AnyObject in stepList[stepNum...stepList.count - 1] {
             if let stepDict = step as? [String : AnyObject] {           // WARN: how does this work?
                 let (start, end) = self.getEndPointsofStep(stepDict)!
                 retList.append(end)
@@ -343,12 +345,26 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         return retList
     }
     
-    func getProximalPlaces(sourcePoints: [CLLocationCoordinate2D]) -> [GooglePlace] {
+    /**
+     * Gets pointwise proximal places for a given CLLocationCoordinate2D.  Needs to 
+     * support asynchronous callback gracefully without blocking execution of the rest
+     * of the application.
+     */
+    func getProximalPlaces(sourcePoints: [CLLocationCoordinate2D], cb: ([GooglePlace] -> Void)) -> Void{
         var places:[GooglePlace] = []
+        var nReturned:Int = 0
+        
         for coord:CLLocationCoordinate2D in sourcePoints {
-            places.extend(self.fetchNearbyPlaces(coord))
+            self.fetchNearbyPlaces(coord) {
+                newPlaces in
+                places.extend(newPlaces)
+                nReturned = nReturned + 1
+
+                if nReturned == sourcePoints.count {
+                    cb(places)
+                }
+            }
         }
-        return places
     }
     
     /**
@@ -395,6 +411,17 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         }
 
         return sortedStrippedPlaces
+    }
+    
+    /**
+     * Fetches a list of nearby places and uses the provided callback to modify the passed list
+     * in the appropriate fashion.
+     */
+    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D, cb: ([GooglePlace] -> Void)) -> Void {
+        dataProvider.fetchPlacesNearCoordinate(coordinate, radius:mapRadius, types: searchedTypes) {
+            places in
+            cb(places)
+        }
     }
     
     /**************************************************************************
