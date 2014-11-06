@@ -46,7 +46,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     let locationManager = CLLocationManager()
     let dataProvider = GoogleDataProvider()
     let strokeWidth: CGFloat = 5
-    let mapRadius = 50000.0
+    let mapRadius = 1000.0
     let tolerate:CLLocationDistance = CLLocationDistance(0.002)
     
     var firstLocationUpdate: Bool?
@@ -54,7 +54,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
     var path:GMSMutablePath?
     var stepList: [AnyObject]!
     var stepNum = 0
-    var end = CLLocationCoordinate2D(latitude: 37.33500926, longitude: -118.03272188)
+    var end = CLLocationCoordinate2D(latitude: 37.33482105, longitude: -122.03450886)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -159,6 +159,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         if(currLoc != nil){
             println(currLoc)
             mapView.animateToLocation(currLoc.coordinate)
+            println("Currently At: {\(currLoc.coordinate.latitude), \(currLoc.coordinate.longitude)}")
             //fetchNearbyPlaces(currLoc.coordinate)
             // TODO: find a more elegant way to exit early.
             if let tst = self.stepList {
@@ -326,6 +327,11 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
             println("----------------- UPDATE TO UI ------------------")
             for pl in filteredPlaces {
                 println(pl.address)
+                println("{\(pl.coordinate.latitude), \(pl.coordinate.longitude)")
+                // plot points down here! make sure that this damn thing actually works.
+                let nwMarker:GMSMarker = GMSMarker(position: pl.coordinate)
+                nwMarker.appearAnimation = kGMSMarkerAnimationPop               // pop animation
+                nwMarker.map = self.mapView
             }
         }
     }
@@ -379,7 +385,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         let pointToEnd:Double = getHaversineDistance(pl.coordinate, p2: self.end)
         let curToEnd:Double = getHaversineDistance(mapView.myLocation.coordinate, p2: self.end)
         
-        let distAdded = (curToPoint + pointToEnd) - curToEnd
+        //let distAdded = (curToPoint + pointToEnd) - curToEnd
+        let distAdded = curToPoint                              // TODO: remove this shim
         
         // TODO: need a way to add ratings in here, should scrape during proximity scan.
         return distAdded
@@ -403,7 +410,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, CLLocationManager
         var sortedPlaces:[(GooglePlace, Double)] = sorted(scoredPlaces) {
             let (p1, v1) = $0
             let (p2, v2) = $1
-            return v1 > v2
+            return v1 < v2
         }
         var sortedStrippedPlaces:[GooglePlace] = []
         for (place, val) in sortedPlaces {
